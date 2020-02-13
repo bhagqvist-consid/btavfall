@@ -33,13 +33,24 @@ OAuth2 Bearer is used, you will be provided with an access token with one year l
 ## Data exchange format
 REST/JSON
 
+## Language
+Most data fields have Swedish naming.
+
+## Request headers
+`NV-Client-System-ID` (mandatory) should contain the name and version of the connecting system.
+
+`NV-Client-Tracking-ID` (optional) is always returned in the response and can be used for tracking the request with an id of your choosing. If it is left unset a random UUID is provided in the response.
+
 ## API's
 ### anteckning
 This is the api for waste operators, handlers, carriers, brokers and dealers
-to register waste notes. 
+to register the regulatory waste notes. 
 
 * Api name: anteckning
 * Description [swagger-file](anteckning-v1-swagger.json).
+
+#### Response
+For all the POST's and PUT's the response body contains the field `AvfallsID` which is the _waste record id_ of the created or updated record. This value should be used when register succeeding events if possible, thereby chaining together events to enable better tracking of the handling of each waste 'thing'.
 
 ### tillsyn
 This is the api for Supervisory authorities to query registred waste notes. 
