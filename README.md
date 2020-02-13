@@ -10,7 +10,8 @@ Informationen om anslutningen och beskrivningen av api:er lämnas här på engel
 ## On-boarding
 <ol>
   <li>Application on-line at The Swedish Environmental Protection Agency</li>
-  <li>Granted access to test nvironment</li>
+  <li>Granted access to test environment</li>
+  <li>Setting up mTLS (installing certificates)
   <li>Review, test and approvement</li>
   <li>Granted access to production environment</li>
 </ol>
