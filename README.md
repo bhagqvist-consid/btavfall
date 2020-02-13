@@ -25,11 +25,25 @@ mTLS is used, you will need to have a client certificate from an approved author
 OAuth2 Bearer is used, you will be provided with an access token with one year limitation.
 
 ## URL
-<p>Production https://api.naturvardsverket.se/btavfall/<api>/v1/<resource>...
-<p>Test https://api-test.naturvardsverket.se/btavfall/<api>/v1/<resource>...
-<p>Sandbox not implemented
+* Production `https://api.naturvardsverket.se/btavfall/[api name]/v1/[resource name]...`
+* Test `https://api-test.naturvardsverket.se/btavfall/[api name]/v1/[resource name]...`
+* Sandbox not implemented
 
 ## Data exchange format
 REST/JSON
 
+## API's
+### anteckning
+This is the api for waste operators, handlers, carriers, brokers and dealers
+to register waste notes. 
+
+Api name: anteckning
+Description [swagger-file](anteckning-v1-swagger.json).
+
+### tillsyn
+This is the api for waste operators, handlers, carriers, brokers and dealers
+to register waste notes. 
+
+Api name: anteckning
+Description [swagger-file](anteckning-v1-swagger.json).
 
