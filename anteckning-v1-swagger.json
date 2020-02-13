@@ -1,0 +1,789 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Avfall",
+    "description": "Version 1",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://api-test.naturvardsverket.se/btavfall/anteckning/v1"
+    }
+  ],
+  "paths": {
+    "/avfallstyper": {
+      "get": {
+        "tags": [
+          "avfallstyper"
+        ],
+        "summary": "Hämtar avfallstyper",
+        "responses": {
+          "200": {
+            "description": "Ok"
+          },
+          "400": {
+            "description": "Request invalid"
+          }
+        }
+      }
+    },
+    "/behandlingsmetoder": {
+      "get": {
+        "tags": [
+          "behandlingsmetoder"
+        ],
+        "summary": "Hämtar typer av behandlingsmetoder som är möjliga för avfall.\r\nGår att filtrera på Disposal (D), eller Recycling (R), eller A för ALL.",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "D (Disposal), R (Recycling) eller A (All)",
+            "schema": {
+              "$ref": "#/components/schemas/BehandlingsMetodFilter"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok"
+          },
+          "400": {
+            "description": "Request invalid"
+          }
+        }
+      }
+    },
+    "/behandlingsmottaganden": {
+      "post": {
+        "tags": [
+          "behandlingsmottaganden"
+        ],
+        "summary": "Registrerar ett behandlingsmottagande",
+        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-10-23T20:03:43.704Z\",\r\n        \"datumForAvfalletsMottagande\": \"2019-10-20\",\r\n        \"ombud\": \"8905191113\",\r\n        \"verksamhetsutovare\": \"5566872247\",\r\n        \"tidigareInnehavare\": \"5568549108\",\r\n        \"referens\": \"string\",\r\n        \"avfall\":{\r\n          \t\"kod\": \"010102\",\r\n          \t\"mangd\": 100.50,\r\n          \t\"foregendeAvfallId\": \"\"\r\n        }\r\n    }",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Behandlingsmottagning"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request invalid"
+          }
+        }
+      }
+    },
+    "/behandlingsoverlamningar": {
+      "post": {
+        "tags": [
+          "behandlingsoverlamningar"
+        ],
+        "summary": "Registrerar ett behandlingsöverlämnande",
+        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-10-10T00:00:30\",\r\n        \"datumForAvfalletsOverlamning\": \"2019-10-20T00:00:30\",\r\n        \"ombud\": \"8905191113\",\r\n        \"verksamhetsutovare\": \"5565994307\",\r\n        \"nyInnehavare\": \"5565994307\",\r\n        \"referens\": \"string\",\r\n        \"avfall\":{\r\n        \t\"kod\": \"010102\",\r\n        \t\"mangd\": 112,\r\n        \t\"foregendeAvfallId\": \"\"\r\n        }\r\n    }",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Behandlingsoverlamning"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request invalid"
+          }
+        }
+      }
+    },
+    "/behandlingsresultat": {
+      "post": {
+        "tags": [
+          "behandlingsresultat"
+        ],
+        "summary": "Registrerar ett behandlingsresultat",
+        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-10-10T00:00:30\",\r\n        \"ombud\": \"8905191113\",\r\n        \"verksamhetsutovare\": \"5565994307\",\r\n        \"referens\": \"string\",\r\n        \"behandlingsmetod\": \"D10\",\r\n        \"avfall\" : { \"mangd\": 123, \"kod\": \"010102\", \"foregaendeAvfallId\" : \"afc2b3d4-c569-46ab-a68c-352b9b0b0111\"},\r\n        \"mangdIckeFarligtAvfall\": 0,\r\n        \"mangdProdukter\": 12.0,\r\n        \"mangdMaterial\": 33.0\r\n    }",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Behandlingsresultat"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request invalid"
+          }
+        }
+      }
+    },
+    "/export": {
+      "post": {
+        "tags": [
+          "export"
+        ],
+        "summary": "Registrerar en export",
+        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-12-16T09:17:52.428Z\",\r\n        \"ombud\": \"9203274817\",\r\n        \"verksamhetsutovare\": \"9203274817\",\r\n        \"referens\": \"string\",\r\n        \"avfall\": {\r\n          \"kod\": \"010102\",\r\n          \"mangd\": 3,\r\n          \"foregaendeAvfallId\": \"\"\r\n        },\r\n        \"behandlingsmetod\": \"R10\",\r\n        \"mangdIckeFarligtAvfall\": 5,\r\n        \"mangdProdukter\": 16,\r\n        \"mangdMaterial\": 2,\r\n        \"utanforEU\": false\r\n    }",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Export"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request invalid"
+          }
+        }
+      }
+    },
+    "/handel": {
+      "post": {
+        "tags": [
+          "handel"
+        ],
+        "summary": "Registrerar handel",
+        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-11-28T20:36:38.017Z\",\r\n        \"ombud\": \"8905191113\",\r\n        \"verksamhetsutovare\": \"5565994307\",\r\n        \"referens\": \"It is I....\",\r\n        \"tidigareInnehavare\": \"5565994307\",\r\n        \"nyInnehavare\": \"8905191113\",\r\n        \"avfall\": {\r\n            \"kod\": \"010102\",\r\n            \"mangd\": 100.50,\r\n            \"foregendeAvfallId\": \"\"\r\n        }\r\n    }",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Handel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request invalid"
+          }
+        }
+      }
+    },
+    "/insamlingar": {
+      "post": {
+        "tags": [
+          "insamlingar"
+        ],
+        "summary": "Registrerar en insamling",
+        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-11-29T08:55:00\",\r\n        \"insamlingsDatum\": \"2019-11-20T12:30:13.577Z\",\r\n        \"ombud\": \"8905191113\",\r\n        \"verksamhetsutovare\": \"2021001975\",\r\n        \"referens\": \"Mellberg\",\r\n        \"tidigareInnehavare\": \"5565994307\",\r\n        \"kommunkod\": \"0180\",\r\n        \"adress\": {\r\n        \t\"adressrad\": \"Hammarbybacken\",\r\n        \t\"postnummer\": \"12030\"\r\n        },\r\n        \"koordinat\": {\r\n        \t\"nposition\": 6577628,\r\n        \t\"eposition\": 675631,\r\n        \t\"beskrivning\": \"\"\r\n        },\r\n        \"avfall\": {\r\n        \t\"kod\": \"010101\",\r\n        \t\"mangd\": 100.50,\r\n        \t\"foregendeAvfallId\": \"\"\r\n        }\r\n    }",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Insamling"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request invalid"
+          }
+        }
+      }
+    },
+    "/insamlingsoverlamningar": {
+      "post": {
+        "tags": [
+          "insamlingsoverlamningar"
+        ],
+        "summary": "Registrerar en insamlingsöverlämning",
+        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-11-25T21:57:54.794Z\",\r\n        \"overlamnatDatum\": \"2019-11-25T21:57:54.794Z\",\r\n        \"ombud\": \"8905191113\",\r\n        \"referens\": \"ref erh.. ens\",\r\n        \"verksamhetsutovare\": \"5565994307\",\r\n        \"nyInnehavare\": \"5565994307\",\r\n        \"behandlingsmetod\": \"D4\",\r\n        \"avfall\": {\r\n        \"kod\": \"010102\",\r\n        \"mangd\": 100.50,\r\n        \"foregendeAvfallId\": \"\"\r\n        }\r\n    }",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Insamlingsoverlamning"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request invalid"
+          }
+        }
+      }
+    },
+    "/transporter": {
+      "post": {
+        "tags": [
+          "transporter"
+        ],
+        "summary": "Registrerar en transport",
+        "description": " Sample request:\r\n\r\n     {\r\n         \"tidpunktForAnteckningen\": \"2019-11-18T16:16:40.878Z\",\r\n         \"datumForStartAvTransport\": \"2019-11-25\",\r\n         \"referens\": \"string\",\r\n         \"ombud\": \"8905191113\",\r\n         \"verksamhetsutovare\": \"5565994307\",\r\n         \"avfall\": {\r\n           \"kod\": \"101010\",\r\n           \"mangd\": 3,\r\n           \"foregendeAvfallId\": \"\"\r\n         },\r\n         \"startTransportPlats\": {\r\n           \"kommunkod\": \"0123\",\r\n           \"adress\": {\r\n             \"adressrad\": \"string\",\r\n             \"postnummer\": \"12345\"\r\n           },\r\n           \"koordinat\": {\r\n\t        \t\"nposition\": 1234567,\r\n             \"eposition\": 123456,\r\n             \"beskrivning\": \"string\"\r\n           }\r\n         },\r\n         \"slutTransportPlats\": {\r\n           \"kommunkod\": \"0123\",\r\n           \"adress\": {\r\n             \"adressrad\": \"string\",\r\n             \"postnummer\": \"12345\"\r\n           },\r\n           \"koordinat\": {\r\n             \"nposition\": 1234567,\r\n             \"eposition\": 123456,\r\n             \"beskrivning\": \"string\"\r\n           }\r\n         },\r\n         \"avsandare\": \"5565994307\",\r\n         \"mottagare\": \"5565994307\",\r\n         \"Transportmedeltyp\": \"S\"\r\n     }",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Transport"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request invalid"
+          }
+        }
+      }
+    },
+    "/transportplaneringar": {
+      "post": {
+        "tags": [
+          "transportplaneringar"
+        ],
+        "summary": "Registrerar en transportplanering",
+        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-11-28T14:06:59.476Z\",\r\n        \"datumPlaneradTransport\": \"2019-11-28T14:06:59.476Z\",\r\n        \"ombud\": \"8905191113\",\r\n        \"verksamhetsutovare\": \"2021001975\",\r\n        \"referens\": \"Lämnas på begäran\",\r\n        \"avfall\": {\r\n          \t\"kod\": \"010102\",\r\n          \t\"mangd\": 100.50\r\n        },\r\n        \"transportor\": \"2021001975\",\r\n        \"mottagare\": \"2021001975\",\r\n        \"platsUppkomst\": {\r\n            \"kommunkod\": \"0123\",\r\n            \"adress\": {\r\n              \"adressrad\": \"string\",\r\n              \"postnummer\": \"12345\"\r\n            },\r\n            \"koordinat\": {\r\n              \"nposition\": 1234567,\r\n              \"eposition\": 123456,\r\n              \"beskrivning\": \"string\"\r\n            }\r\n        }\r\n    }",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Transportplanering"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request invalid"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BehandlingsMetodFilter": {
+        "enum": [
+          "A",
+          "R",
+          "D"
+        ],
+        "type": "string"
+      },
+      "Avfall": {
+        "type": "object",
+        "properties": {
+          "kod": {
+            "type": "string",
+            "nullable": true
+          },
+          "mangd": {
+            "type": "number",
+            "format": "double"
+          },
+          "foregaendeAvfallId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Behandlingsmottagning": {
+        "type": "object",
+        "properties": {
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "datumForAvfalletsMottagande": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ombud": {
+            "type": "string",
+            "nullable": true
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "nullable": true
+          },
+          "tidigareInnehavare": {
+            "type": "string",
+            "nullable": true
+          },
+          "referens": {
+            "type": "string",
+            "nullable": true
+          },
+          "avfall": {
+            "$ref": "#/components/schemas/Avfall"
+          }
+        }
+      },
+      "AntecknaSvar": {
+        "type": "object",
+        "properties": {
+          "avfallId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Behandlingsoverlamning": {
+        "type": "object",
+        "properties": {
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "datumForAvfalletsOverlamning": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ombud": {
+            "type": "string",
+            "nullable": true
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "nullable": true
+          },
+          "referens": {
+            "type": "string",
+            "nullable": true
+          },
+          "avfall": {
+            "$ref": "#/components/schemas/Avfall"
+          },
+          "nyInnehavare": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Behandlingsresultat": {
+        "type": "object",
+        "properties": {
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ombud": {
+            "type": "string",
+            "nullable": true
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "nullable": true
+          },
+          "referens": {
+            "type": "string",
+            "nullable": true
+          },
+          "avfall": {
+            "$ref": "#/components/schemas/Avfall"
+          },
+          "behandlingsmetod": {
+            "type": "string",
+            "nullable": true
+          },
+          "mangdIckeFarligtAvfall": {
+            "type": "number",
+            "format": "double"
+          },
+          "mangdProdukter": {
+            "type": "number",
+            "format": "double"
+          },
+          "mangdMaterial": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "Export": {
+        "type": "object",
+        "properties": {
+          "utanforEU": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ombud": {
+            "type": "string",
+            "nullable": true
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "nullable": true
+          },
+          "referens": {
+            "type": "string",
+            "nullable": true
+          },
+          "avfall": {
+            "$ref": "#/components/schemas/Avfall"
+          },
+          "behandlingsmetod": {
+            "type": "string",
+            "nullable": true
+          },
+          "mangdIckeFarligtAvfall": {
+            "type": "number",
+            "format": "double"
+          },
+          "mangdProdukter": {
+            "type": "number",
+            "format": "double"
+          },
+          "mangdMaterial": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "Handel": {
+        "type": "object",
+        "properties": {
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ombud": {
+            "type": "string",
+            "nullable": true
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "nullable": true
+          },
+          "referens": {
+            "type": "string",
+            "nullable": true
+          },
+          "tidigareInnehavare": {
+            "type": "string",
+            "nullable": true
+          },
+          "nyInnehavare": {
+            "type": "string",
+            "nullable": true
+          },
+          "avfall": {
+            "$ref": "#/components/schemas/Avfall"
+          }
+        }
+      },
+      "Adress": {
+        "type": "object",
+        "properties": {
+          "adressrad": {
+            "type": "string",
+            "nullable": true
+          },
+          "postnummer": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Koordinat": {
+        "type": "object",
+        "properties": {
+          "nposition": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "eposition": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "beskrivning": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Insamling": {
+        "type": "object",
+        "properties": {
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "insamlingsDatum": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ombud": {
+            "type": "string",
+            "nullable": true
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "nullable": true
+          },
+          "referens": {
+            "type": "string",
+            "nullable": true
+          },
+          "tidigareInnehavare": {
+            "type": "string",
+            "nullable": true
+          },
+          "kommunkod": {
+            "type": "string",
+            "nullable": true
+          },
+          "adress": {
+            "$ref": "#/components/schemas/Adress"
+          },
+          "koordinat": {
+            "$ref": "#/components/schemas/Koordinat"
+          },
+          "avfall": {
+            "$ref": "#/components/schemas/Avfall"
+          }
+        }
+      },
+      "Insamlingsoverlamning": {
+        "type": "object",
+        "properties": {
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "overlamnatDatum": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ombud": {
+            "type": "string",
+            "nullable": true
+          },
+          "referens": {
+            "type": "string",
+            "nullable": true
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "nullable": true
+          },
+          "nyInnehavare": {
+            "type": "string",
+            "nullable": true
+          },
+          "behandlingsmetod": {
+            "type": "string",
+            "nullable": true
+          },
+          "avfall": {
+            "$ref": "#/components/schemas/Avfall"
+          }
+        }
+      },
+      "Plats": {
+        "type": "object",
+        "properties": {
+          "kommunkod": {
+            "type": "string",
+            "nullable": true
+          },
+          "adress": {
+            "$ref": "#/components/schemas/Adress"
+          },
+          "koordinat": {
+            "$ref": "#/components/schemas/Koordinat"
+          }
+        }
+      },
+      "Transport": {
+        "type": "object",
+        "properties": {
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "datumForStartAvTransport": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "referens": {
+            "type": "string",
+            "nullable": true
+          },
+          "ombud": {
+            "type": "string",
+            "nullable": true
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "nullable": true
+          },
+          "avfall": {
+            "$ref": "#/components/schemas/Avfall"
+          },
+          "startTransportPlats": {
+            "$ref": "#/components/schemas/Plats"
+          },
+          "slutTransportPlats": {
+            "$ref": "#/components/schemas/Plats"
+          },
+          "avsandare": {
+            "type": "string",
+            "nullable": true
+          },
+          "mottagare": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportmedeltyp": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Transportplanering": {
+        "type": "object",
+        "properties": {
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "datumPlaneradTransport": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ombud": {
+            "type": "string",
+            "nullable": true
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "nullable": true
+          },
+          "referens": {
+            "type": "string",
+            "nullable": true
+          },
+          "avfall": {
+            "$ref": "#/components/schemas/Avfall"
+          },
+          "transportor": {
+            "type": "string",
+            "nullable": true
+          },
+          "platsUppkomst": {
+            "$ref": "#/components/schemas/Plats"
+          },
+          "mottagare": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      }
+    }
+  }
+}
