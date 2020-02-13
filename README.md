@@ -41,9 +41,8 @@ Api name: anteckning
 Description [swagger-file](anteckning-v1-swagger.json).
 
 ### tillsyn
-This is the api for waste operators, handlers, carriers, brokers and dealers
-to register waste notes. 
+This is the api for Supervisory authorities to query registred waste notes. 
 
-Api name: anteckning
-Description [swagger-file](anteckning-v1-swagger.json).
+Api name: tillsyn
+Description [swagger-file]().
 
