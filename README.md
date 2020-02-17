@@ -19,6 +19,9 @@ Informationen om anslutningen och beskrivningen av api:er lämnas här på engel
 ## Service style
 REST
 
+## Data exchange format
+JSON
+
 ## Transport security
 mTLS is used, you will need to have a client certificate from an approved authority.
 
@@ -29,9 +32,6 @@ OAuth2 Bearer is used, you will be provided with an access token with one year l
 * Production `https://api.naturvardsverket.se/btavfall/[api name]/v1/[resource name]...`
 * Test `https://api-test.naturvardsverket.se/btavfall/[api name]/v1/[resource name]...`
 * Sandbox not implemented
-
-## Data exchange format
-REST/JSON
 
 ## Language
 Most data fields have Swedish naming.
