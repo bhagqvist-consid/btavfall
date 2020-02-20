@@ -44,7 +44,7 @@ Most data fields have Swedish naming.
 ## API's
 ### Submission of waste notes
 This is the api for waste operators, handlers, carriers, brokers and dealers
-to register the regulatory waste notes. 
+for submission of regulatory waste notes. 
 
 * Api name: anteckning
 * Description [swagger-file](anteckning-v1-swagger.json).
