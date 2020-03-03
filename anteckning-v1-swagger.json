@@ -7,10 +7,50 @@
   },
   "servers": [
     {
-      "url": "https://api-test.naturvardsverket.se/btavfall/anteckning/v1"
+      "url": "http://localhost:64102/api/v1"
     }
   ],
   "paths": {
+    "/atervinningsresultattyper": {
+      "get": {
+        "tags": [
+          "atervinningsresultattyper"
+        ],
+        "summary": "Hämtar återvinningsresultattyper",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/atervinningsresultattyper/{atervinningsresultatkod}": {
+      "get": {
+        "tags": [
+          "atervinningsresultattyper"
+        ],
+        "summary": "",
+        "parameters": [
+          {
+            "name": "atervinningsresultatkod",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/avfallstyper": {
       "get": {
         "tags": [
@@ -19,10 +59,10 @@
         "summary": "Hämtar avfallstyper",
         "responses": {
           "200": {
-            "description": "Ok"
+            "description": "OK"
           },
           "400": {
-            "description": "Request invalid"
+            "description": "Bad Request"
           }
         }
       }
@@ -45,10 +85,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Ok"
+            "description": "OK"
           },
           "400": {
-            "description": "Request invalid"
+            "description": "Bad Request"
           }
         }
       }
@@ -59,7 +99,6 @@
           "behandlingsmottaganden"
         ],
         "summary": "Registrerar ett behandlingsmottagande",
-        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-10-23T20:03:43.704Z\",\r\n        \"datumForAvfalletsMottagande\": \"2019-10-20\",\r\n        \"ombud\": \"8905191113\",\r\n        \"verksamhetsutovare\": \"5566872247\",\r\n        \"tidigareInnehavare\": \"5568549108\",\r\n        \"referens\": \"string\",\r\n        \"avfall\":{\r\n          \t\"kod\": \"010102\",\r\n          \t\"mangd\": 100.50,\r\n          \t\"foregendeAvfallId\": \"\"\r\n        }\r\n    }",
         "requestBody": {
           "description": "",
           "content": {
@@ -72,7 +111,51 @@
         },
         "responses": {
           "200": {
-            "description": "Ok",
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/behandlingsmottaganden/{id}": {
+      "put": {
+        "tags": [
+          "behandlingsmottaganden"
+        ],
+        "summary": "Uppdaterar ett behandlingsmottagande",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Avfallsid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Behandlingsmottagning"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -93,7 +176,6 @@
           "behandlingsoverlamningar"
         ],
         "summary": "Registrerar ett behandlingsöverlämnande",
-        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-10-10T00:00:30\",\r\n        \"datumForAvfalletsOverlamning\": \"2019-10-20T00:00:30\",\r\n        \"ombud\": \"8905191113\",\r\n        \"verksamhetsutovare\": \"5565994307\",\r\n        \"nyInnehavare\": \"5565994307\",\r\n        \"referens\": \"string\",\r\n        \"avfall\":{\r\n        \t\"kod\": \"010102\",\r\n        \t\"mangd\": 112,\r\n        \t\"foregendeAvfallId\": \"\"\r\n        }\r\n    }",
         "requestBody": {
           "description": "",
           "content": {
@@ -106,7 +188,7 @@
         },
         "responses": {
           "200": {
-            "description": "Ok",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -121,13 +203,56 @@
         }
       }
     },
+    "/behandlingsoverlamningar/{id}": {
+      "put": {
+        "tags": [
+          "behandlingsoverlamningar"
+        ],
+        "summary": "Uppdaterar ett behandlingsöverlämnande",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Avfallsid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Behandlingsoverlamning"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/behandlingsresultat": {
       "post": {
         "tags": [
           "behandlingsresultat"
         ],
         "summary": "Registrerar ett behandlingsresultat",
-        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-10-10T00:00:30\",\r\n        \"ombud\": \"8905191113\",\r\n        \"verksamhetsutovare\": \"5565994307\",\r\n        \"referens\": \"string\",\r\n        \"behandlingsmetod\": \"D10\",\r\n        \"avfall\" : { \"mangd\": 123, \"kod\": \"010102\", \"foregaendeAvfallId\" : \"afc2b3d4-c569-46ab-a68c-352b9b0b0111\"},\r\n        \"mangdIckeFarligtAvfall\": 0,\r\n        \"mangdProdukter\": 12.0,\r\n        \"mangdMaterial\": 33.0\r\n    }",
         "requestBody": {
           "description": "",
           "content": {
@@ -140,7 +265,7 @@
         },
         "responses": {
           "200": {
-            "description": "Ok",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -155,13 +280,56 @@
         }
       }
     },
+    "/behandlingsresultat/{id}": {
+      "put": {
+        "tags": [
+          "behandlingsresultat"
+        ],
+        "summary": "Uppdaterar ett behandlingsresultat",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Avfallsid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Behandlingsresultat"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/export": {
       "post": {
         "tags": [
           "export"
         ],
         "summary": "Registrerar en export",
-        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-12-16T09:17:52.428Z\",\r\n        \"ombud\": \"9203274817\",\r\n        \"verksamhetsutovare\": \"9203274817\",\r\n        \"referens\": \"string\",\r\n        \"avfall\": {\r\n          \"kod\": \"010102\",\r\n          \"mangd\": 3,\r\n          \"foregaendeAvfallId\": \"\"\r\n        },\r\n        \"behandlingsmetod\": \"R10\",\r\n        \"mangdIckeFarligtAvfall\": 5,\r\n        \"mangdProdukter\": 16,\r\n        \"mangdMaterial\": 2,\r\n        \"utanforEU\": false\r\n    }",
         "requestBody": {
           "description": "",
           "content": {
@@ -174,7 +342,7 @@
         },
         "responses": {
           "200": {
-            "description": "Ok",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -189,13 +357,56 @@
         }
       }
     },
+    "/export/{id}": {
+      "put": {
+        "tags": [
+          "export"
+        ],
+        "summary": "Uppdaterar en export",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Avfallsid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Export"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/handel": {
       "post": {
         "tags": [
           "handel"
         ],
         "summary": "Registrerar handel",
-        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-11-28T20:36:38.017Z\",\r\n        \"ombud\": \"8905191113\",\r\n        \"verksamhetsutovare\": \"5565994307\",\r\n        \"referens\": \"It is I....\",\r\n        \"tidigareInnehavare\": \"5565994307\",\r\n        \"nyInnehavare\": \"8905191113\",\r\n        \"avfall\": {\r\n            \"kod\": \"010102\",\r\n            \"mangd\": 100.50,\r\n            \"foregendeAvfallId\": \"\"\r\n        }\r\n    }",
         "requestBody": {
           "description": "",
           "content": {
@@ -208,7 +419,7 @@
         },
         "responses": {
           "200": {
-            "description": "Ok",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -223,13 +434,57 @@
         }
       }
     },
+    "/handel/{id}": {
+      "put": {
+        "tags": [
+          "handel"
+        ],
+        "summary": "Uppdaterar handel",
+        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-11-28T20:36:38.017Z\",\r\n        \"ombud\": \"8905191113\",\r\n        \"verksamhetsutovare\": \"5565994307\",\r\n        \"referens\": \"It is I....\",\r\n        \"tidigareInnehavare\": \"5565994307\",\r\n        \"nyInnehavare\": \"8905191113\",\r\n        \"avfall\": {\r\n            \"kod\": \"010102\",\r\n            \"mangd\": 100.50,\r\n            \"foregendeAvfallId\": \"\"\r\n        }\r\n    }",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Avfallsid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Handel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/insamlingar": {
       "post": {
         "tags": [
           "insamlingar"
         ],
         "summary": "Registrerar en insamling",
-        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-11-29T08:55:00\",\r\n        \"insamlingsDatum\": \"2019-11-20T12:30:13.577Z\",\r\n        \"ombud\": \"8905191113\",\r\n        \"verksamhetsutovare\": \"2021001975\",\r\n        \"referens\": \"Mellberg\",\r\n        \"tidigareInnehavare\": \"5565994307\",\r\n        \"kommunkod\": \"0180\",\r\n        \"adress\": {\r\n        \t\"adressrad\": \"Hammarbybacken\",\r\n        \t\"postnummer\": \"12030\"\r\n        },\r\n        \"koordinat\": {\r\n        \t\"nposition\": 6577628,\r\n        \t\"eposition\": 675631,\r\n        \t\"beskrivning\": \"\"\r\n        },\r\n        \"avfall\": {\r\n        \t\"kod\": \"010101\",\r\n        \t\"mangd\": 100.50,\r\n        \t\"foregendeAvfallId\": \"\"\r\n        }\r\n    }",
         "requestBody": {
           "description": "",
           "content": {
@@ -242,7 +497,7 @@
         },
         "responses": {
           "200": {
-            "description": "Ok",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -252,7 +507,49 @@
             }
           },
           "400": {
-            "description": "Request invalid"
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/insamlingar/{id}": {
+      "put": {
+        "tags": [
+          "insamlingar"
+        ],
+        "summary": "Uppdaterar en insamling",
+        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-11-29T08:55:00\",\r\n        \"insamlingsDatum\": \"2019-11-20T12:30:13.577Z\",\r\n        \"ombud\": \"8905191113\",\r\n        \"verksamhetsutovare\": \"2021001975\",\r\n        \"referens\": \"Mellberg\",\r\n        \"tidigareInnehavare\": \"5565994307\",\r\n        \"kommunkod\": \"0180\",\r\n        \"adress\": {\r\n        \t\"adressrad\": \"Hammarbybacken\",\r\n        \t\"postnummer\": \"12030\"\r\n        },\r\n        \"koordinat\": {\r\n        \t\"nposition\": 6577628,\r\n        \t\"eposition\": 675631,\r\n        \t\"beskrivning\": \"\"\r\n        },\r\n        \"avfall\": {\r\n        \t\"kod\": \"010101\",\r\n        \t\"mangd\": 100.50,\r\n        \t\"foregendeAvfallId\": \"\"\r\n        }\r\n    }",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Avfallsid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Insamling"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
           }
         }
       }
@@ -263,7 +560,6 @@
           "insamlingsoverlamningar"
         ],
         "summary": "Registrerar en insamlingsöverlämning",
-        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-11-25T21:57:54.794Z\",\r\n        \"overlamnatDatum\": \"2019-11-25T21:57:54.794Z\",\r\n        \"ombud\": \"8905191113\",\r\n        \"referens\": \"ref erh.. ens\",\r\n        \"verksamhetsutovare\": \"5565994307\",\r\n        \"nyInnehavare\": \"5565994307\",\r\n        \"behandlingsmetod\": \"D4\",\r\n        \"avfall\": {\r\n        \"kod\": \"010102\",\r\n        \"mangd\": 100.50,\r\n        \"foregendeAvfallId\": \"\"\r\n        }\r\n    }",
         "requestBody": {
           "description": "",
           "content": {
@@ -276,7 +572,7 @@
         },
         "responses": {
           "200": {
-            "description": "Ok",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -286,7 +582,48 @@
             }
           },
           "400": {
-            "description": "Request invalid"
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/insamlingsoverlamningar/{id}": {
+      "put": {
+        "tags": [
+          "insamlingsoverlamningar"
+        ],
+        "summary": "Uppdaterar en insamlingsöverlämning",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Avfallsid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Insamlingsoverlamning"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
           }
         }
       }
@@ -297,7 +634,6 @@
           "transporter"
         ],
         "summary": "Registrerar en transport",
-        "description": " Sample request:\r\n\r\n     {\r\n         \"tidpunktForAnteckningen\": \"2019-11-18T16:16:40.878Z\",\r\n         \"datumForStartAvTransport\": \"2019-11-25\",\r\n         \"referens\": \"string\",\r\n         \"ombud\": \"8905191113\",\r\n         \"verksamhetsutovare\": \"5565994307\",\r\n         \"avfall\": {\r\n           \"kod\": \"101010\",\r\n           \"mangd\": 3,\r\n           \"foregendeAvfallId\": \"\"\r\n         },\r\n         \"startTransportPlats\": {\r\n           \"kommunkod\": \"0123\",\r\n           \"adress\": {\r\n             \"adressrad\": \"string\",\r\n             \"postnummer\": \"12345\"\r\n           },\r\n           \"koordinat\": {\r\n\t        \t\"nposition\": 1234567,\r\n             \"eposition\": 123456,\r\n             \"beskrivning\": \"string\"\r\n           }\r\n         },\r\n         \"slutTransportPlats\": {\r\n           \"kommunkod\": \"0123\",\r\n           \"adress\": {\r\n             \"adressrad\": \"string\",\r\n             \"postnummer\": \"12345\"\r\n           },\r\n           \"koordinat\": {\r\n             \"nposition\": 1234567,\r\n             \"eposition\": 123456,\r\n             \"beskrivning\": \"string\"\r\n           }\r\n         },\r\n         \"avsandare\": \"5565994307\",\r\n         \"mottagare\": \"5565994307\",\r\n         \"Transportmedeltyp\": \"S\"\r\n     }",
         "requestBody": {
           "description": "",
           "content": {
@@ -310,7 +646,7 @@
         },
         "responses": {
           "200": {
-            "description": "Ok",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -320,7 +656,71 @@
             }
           },
           "400": {
-            "description": "Request invalid"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationErrorDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transporter/{id}": {
+      "put": {
+        "tags": [
+          "transporter"
+        ],
+        "summary": "Uppdaterar en transport",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Avfallsid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Transport"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transportmedel": {
+      "get": {
+        "tags": [
+          "transportmedel"
+        ],
+        "summary": "Hämtar en lista med transportmedel",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -331,7 +731,6 @@
           "transportplaneringar"
         ],
         "summary": "Registrerar en transportplanering",
-        "description": "Sample request:\r\n            \r\n    {\r\n        \"tidpunktForAnteckningen\": \"2019-11-28T14:06:59.476Z\",\r\n        \"datumPlaneradTransport\": \"2019-11-28T14:06:59.476Z\",\r\n        \"ombud\": \"8905191113\",\r\n        \"verksamhetsutovare\": \"2021001975\",\r\n        \"referens\": \"Lämnas på begäran\",\r\n        \"avfall\": {\r\n          \t\"kod\": \"010102\",\r\n          \t\"mangd\": 100.50\r\n        },\r\n        \"transportor\": \"2021001975\",\r\n        \"mottagare\": \"2021001975\",\r\n        \"platsUppkomst\": {\r\n            \"kommunkod\": \"0123\",\r\n            \"adress\": {\r\n              \"adressrad\": \"string\",\r\n              \"postnummer\": \"12345\"\r\n            },\r\n            \"koordinat\": {\r\n              \"nposition\": 1234567,\r\n              \"eposition\": 123456,\r\n              \"beskrivning\": \"string\"\r\n            }\r\n        }\r\n    }",
         "requestBody": {
           "description": "",
           "content": {
@@ -344,7 +743,7 @@
         },
         "responses": {
           "200": {
-            "description": "Ok",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -354,7 +753,48 @@
             }
           },
           "400": {
-            "description": "Request invalid"
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/transportplaneringar/{id}": {
+      "put": {
+        "tags": [
+          "transportplaneringar"
+        ],
+        "summary": "Uppdaterar en transportplanering",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Avfallsid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Transportplanering"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
           }
         }
       }
@@ -364,228 +804,25 @@
     "schemas": {
       "BehandlingsMetodFilter": {
         "enum": [
-          "A",
-          "R",
-          "D"
+          0,
+          1,
+          2
         ],
-        "type": "string"
-      },
-      "Avfall": {
-        "type": "object",
-        "properties": {
-          "kod": {
-            "type": "string",
-            "nullable": true
-          },
-          "mangd": {
-            "type": "number",
-            "format": "double"
-          },
-          "foregaendeAvfallId": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "Behandlingsmottagning": {
-        "type": "object",
-        "properties": {
-          "tidpunktForAnteckningen": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "datumForAvfalletsMottagande": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "ombud": {
-            "type": "string",
-            "nullable": true
-          },
-          "verksamhetsutovare": {
-            "type": "string",
-            "nullable": true
-          },
-          "tidigareInnehavare": {
-            "type": "string",
-            "nullable": true
-          },
-          "referens": {
-            "type": "string",
-            "nullable": true
-          },
-          "avfall": {
-            "$ref": "#/components/schemas/Avfall"
-          }
-        }
-      },
-      "AntecknaSvar": {
-        "type": "object",
-        "properties": {
-          "avfallId": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "Behandlingsoverlamning": {
-        "type": "object",
-        "properties": {
-          "tidpunktForAnteckningen": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "datumForAvfalletsOverlamning": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "ombud": {
-            "type": "string",
-            "nullable": true
-          },
-          "verksamhetsutovare": {
-            "type": "string",
-            "nullable": true
-          },
-          "referens": {
-            "type": "string",
-            "nullable": true
-          },
-          "avfall": {
-            "$ref": "#/components/schemas/Avfall"
-          },
-          "nyInnehavare": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "Behandlingsresultat": {
-        "type": "object",
-        "properties": {
-          "tidpunktForAnteckningen": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "ombud": {
-            "type": "string",
-            "nullable": true
-          },
-          "verksamhetsutovare": {
-            "type": "string",
-            "nullable": true
-          },
-          "referens": {
-            "type": "string",
-            "nullable": true
-          },
-          "avfall": {
-            "$ref": "#/components/schemas/Avfall"
-          },
-          "behandlingsmetod": {
-            "type": "string",
-            "nullable": true
-          },
-          "mangdIckeFarligtAvfall": {
-            "type": "number",
-            "format": "double"
-          },
-          "mangdProdukter": {
-            "type": "number",
-            "format": "double"
-          },
-          "mangdMaterial": {
-            "type": "number",
-            "format": "double"
-          }
-        }
-      },
-      "Export": {
-        "type": "object",
-        "properties": {
-          "utanforEU": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "tidpunktForAnteckningen": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "ombud": {
-            "type": "string",
-            "nullable": true
-          },
-          "verksamhetsutovare": {
-            "type": "string",
-            "nullable": true
-          },
-          "referens": {
-            "type": "string",
-            "nullable": true
-          },
-          "avfall": {
-            "$ref": "#/components/schemas/Avfall"
-          },
-          "behandlingsmetod": {
-            "type": "string",
-            "nullable": true
-          },
-          "mangdIckeFarligtAvfall": {
-            "type": "number",
-            "format": "double"
-          },
-          "mangdProdukter": {
-            "type": "number",
-            "format": "double"
-          },
-          "mangdMaterial": {
-            "type": "number",
-            "format": "double"
-          }
-        }
-      },
-      "Handel": {
-        "type": "object",
-        "properties": {
-          "tidpunktForAnteckningen": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "ombud": {
-            "type": "string",
-            "nullable": true
-          },
-          "verksamhetsutovare": {
-            "type": "string",
-            "nullable": true
-          },
-          "referens": {
-            "type": "string",
-            "nullable": true
-          },
-          "tidigareInnehavare": {
-            "type": "string",
-            "nullable": true
-          },
-          "nyInnehavare": {
-            "type": "string",
-            "nullable": true
-          },
-          "avfall": {
-            "$ref": "#/components/schemas/Avfall"
-          }
-        }
+        "type": "integer",
+        "format": "int32"
       },
       "Adress": {
         "type": "object",
         "properties": {
           "adressrad": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "example": "Vagvagen 25"
           },
           "postnummer": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "example": "27833"
           }
         }
       },
@@ -594,193 +831,1078 @@
         "properties": {
           "nposition": {
             "type": "integer",
-            "format": "int64"
+            "description": "En Nposition enligt kordinatsystemet SWEREF 99, 7 siffror.",
+            "format": "int64",
+            "example": 1234567
           },
           "eposition": {
             "type": "integer",
-            "format": "int64"
+            "description": "En Eposition enligt kordinatsystemet SWEREF 99, 6 siffror.",
+            "format": "int64",
+            "example": 123456
           },
           "beskrivning": {
             "type": "string",
+            "description": "En beskrivning av positionen",
             "nullable": true
-          }
-        }
-      },
-      "Insamling": {
-        "type": "object",
-        "properties": {
-          "tidpunktForAnteckningen": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "insamlingsDatum": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "ombud": {
-            "type": "string",
-            "nullable": true
-          },
-          "verksamhetsutovare": {
-            "type": "string",
-            "nullable": true
-          },
-          "referens": {
-            "type": "string",
-            "nullable": true
-          },
-          "tidigareInnehavare": {
-            "type": "string",
-            "nullable": true
-          },
-          "kommunkod": {
-            "type": "string",
-            "nullable": true
-          },
-          "adress": {
-            "$ref": "#/components/schemas/Adress"
-          },
-          "koordinat": {
-            "$ref": "#/components/schemas/Koordinat"
-          },
-          "avfall": {
-            "$ref": "#/components/schemas/Avfall"
-          }
-        }
-      },
-      "Insamlingsoverlamning": {
-        "type": "object",
-        "properties": {
-          "tidpunktForAnteckningen": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "overlamnatDatum": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "ombud": {
-            "type": "string",
-            "nullable": true
-          },
-          "referens": {
-            "type": "string",
-            "nullable": true
-          },
-          "verksamhetsutovare": {
-            "type": "string",
-            "nullable": true
-          },
-          "nyInnehavare": {
-            "type": "string",
-            "nullable": true
-          },
-          "behandlingsmetod": {
-            "type": "string",
-            "nullable": true
-          },
-          "avfall": {
-            "$ref": "#/components/schemas/Avfall"
           }
         }
       },
       "Plats": {
+        "required": [
+          "kommunkod"
+        ],
         "type": "object",
         "properties": {
           "kommunkod": {
             "type": "string",
-            "nullable": true
+            "description": "4 siffrig kommunkod",
+            "example": "1234"
           },
           "adress": {
-            "$ref": "#/components/schemas/Adress"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Adress"
+              }
+            ],
+            "nullable": true
           },
           "koordinat": {
-            "$ref": "#/components/schemas/Koordinat"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Koordinat"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "description": "Kommunkod och Adress med postnummer eller en geometrisk punkt med beskrivning."
+      },
+      "Avfall": {
+        "type": "object",
+        "properties": {
+          "kod": {
+            "type": "string",
+            "description": "En 6-siffrig kod",
+            "nullable": true,
+            "example": "020101"
+          },
+          "mangd": {
+            "type": "number",
+            "description": "Mängd avfall",
+            "format": "double",
+            "example": 20
+          },
+          "foregaendeAvfallId": {
+            "type": "string",
+            "description": "Det avfallsid för den unika avfallsmängd som registrerades i närmast föregående anteckning",
+            "nullable": true
+          }
+        }
+      },
+      "Behandlingsmottagning": {
+        "required": [
+          "avfall",
+          "behandlingsPlats",
+          "datumForAvfalletsMottagande",
+          "ombud",
+          "ombudetsKontaktpersonEpost",
+          "ombudetsKontaktpersonNamn",
+          "ombudetsKontaktpersonTelefonnummer",
+          "ombudetsNamn",
+          "tidigareInnehavare",
+          "tidpunktForAnteckningen",
+          "verksamhetensKontaktpersonEpost",
+          "verksamhetensKontaktpersonNamn",
+          "verksamhetensKontaktpersonTelefonnummer",
+          "verksamhetensNamn",
+          "verksamhetsutovare"
+        ],
+        "type": "object",
+        "properties": {
+          "datumForAvfalletsMottagande": {
+            "type": "string",
+            "description": "Datum när avfallet togs emot (ex för behandling).",
+            "format": "date-time",
+            "example": "2019-11-18T17:16:40.8780000+01:00"
+          },
+          "tidigareInnehavare": {
+            "type": "string",
+            "description": "Verksamhetsutövare (orgnr) som var senaste innehavare av avfallet."
+          },
+          "behandlingsPlats": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Plats"
+              }
+            ],
+            "description": "Den plats där behandling av avfall sker."
+          },
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
+            "format": "date-time",
+            "example": "2019-11-18T17:16:40.8780000+01:00"
+          },
+          "ombud": {
+            "type": "string",
+            "description": "Det företag (orgnr) eller person (persnr) som registrerat in anteckningen i verksamhetsutövarens ställe."
+          },
+          "ombudetsNamn": {
+            "type": "string",
+            "description": "Ombudets namn"
+          },
+          "ombudetsKontaktpersonNamn": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (namn)"
+          },
+          "ombudetsKontaktpersonEpost": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (epost)"
+          },
+          "ombudetsKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (telefonnummer)"
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "description": "Den som är anteckningsskyldig (orgnr) för att ha hanterat eller transporterat avfallet."
+          },
+          "verksamhetensNamn": {
+            "type": "string",
+            "description": "Verksamhetens namn"
+          },
+          "verksamhetensKontaktpersonNamn": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (namn)"
+          },
+          "verksamhetensKontaktpersonEpost": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (epost)"
+          },
+          "verksamhetensKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (telefonnummer)"
+          },
+          "referens": {
+            "type": "string",
+            "description": "Löpnummer eller signatur i verksamhetsutövarens system för härledning av den person som gjort anteckningen.",
+            "nullable": true
+          },
+          "avfall": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Avfall"
+              }
+            ],
+            "description": "Ett avfall av en viss mängd i kg av en viss avfallstyp."
+          }
+        }
+      },
+      "AntecknaSvar": {
+        "type": "object",
+        "properties": {
+          "avfallId": {
+            "type": "string",
+            "description": "Ett maskingenererat identifikationsnummer för varje avfallsmängd som antecknats.",
+            "nullable": true
+          }
+        }
+      },
+      "Behandlingsoverlamning": {
+        "required": [
+          "avfall",
+          "datumForAvfalletsOverlamning",
+          "nyInnehavare",
+          "ombud",
+          "ombudetsKontaktpersonEpost",
+          "ombudetsKontaktpersonNamn",
+          "ombudetsKontaktpersonTelefonnummer",
+          "ombudetsNamn",
+          "overlamningsPlats",
+          "tidpunktForAnteckningen",
+          "verksamhetensKontaktpersonEpost",
+          "verksamhetensKontaktpersonNamn",
+          "verksamhetensKontaktpersonTelefonnummer",
+          "verksamhetensNamn",
+          "verksamhetsutovare"
+        ],
+        "type": "object",
+        "properties": {
+          "datumForAvfalletsOverlamning": {
+            "type": "string",
+            "description": "Datum när avfallet överlämnades till en annan verksamhetsutövare för vidare hantering.",
+            "format": "date-time",
+            "example": "2019-11-18T17:16:40.8780000+01:00"
+          },
+          "nyInnehavare": {
+            "type": "string",
+            "description": "Verksamhetsutövare (orgnr) som övertar avfallet för vidare hantering."
+          },
+          "overlamningsPlats": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Plats"
+              }
+            ],
+            "description": "Den plats där behandling av avfall sker."
+          },
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
+            "format": "date-time",
+            "example": "2019-11-18T17:16:40.8780000+01:00"
+          },
+          "ombud": {
+            "type": "string",
+            "description": "Det företag (orgnr) eller person (persnr) som registrerat in anteckningen i verksamhetsutövarens ställe."
+          },
+          "ombudetsNamn": {
+            "type": "string",
+            "description": "Ombudets namn"
+          },
+          "ombudetsKontaktpersonNamn": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (namn)"
+          },
+          "ombudetsKontaktpersonEpost": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (epost)"
+          },
+          "ombudetsKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (telefonnummer)"
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "description": "Den som är anteckningsskyldig (orgnr) för att ha hanterat eller transporterat avfallet."
+          },
+          "verksamhetensNamn": {
+            "type": "string",
+            "description": "Verksamhetens namn"
+          },
+          "verksamhetensKontaktpersonNamn": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (namn)"
+          },
+          "verksamhetensKontaktpersonEpost": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (epost)"
+          },
+          "verksamhetensKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (telefonnummer)"
+          },
+          "referens": {
+            "type": "string",
+            "description": "Löpnummer eller signatur i verksamhetsutövarens system för härledning av den person som gjort anteckningen.",
+            "nullable": true
+          },
+          "avfall": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Avfall"
+              }
+            ],
+            "description": "Ett avfall av en viss mängd i kg av en viss avfallstyp."
+          }
+        }
+      },
+      "Behandlingsresultat": {
+        "required": [
+          "avfall",
+          "behandlingsmetod",
+          "behandlingsPlats",
+          "ombud",
+          "ombudetsKontaktpersonEpost",
+          "ombudetsKontaktpersonNamn",
+          "ombudetsKontaktpersonTelefonnummer",
+          "ombudetsNamn",
+          "tidpunktForAnteckningen",
+          "verksamhetensKontaktpersonEpost",
+          "verksamhetensKontaktpersonNamn",
+          "verksamhetensKontaktpersonTelefonnummer",
+          "verksamhetensNamn",
+          "verksamhetsutovare"
+        ],
+        "type": "object",
+        "properties": {
+          "behandlingsmetod": {
+            "type": "string",
+            "description": "Med vilken metod avfallet behandlades, en R/D-kod."
+          },
+          "mangdIckeFarligtAvfall": {
+            "type": "number",
+            "description": "Mängd avfall i kg som inte är markerat som farligt",
+            "format": "double",
+            "example": 24.5
+          },
+          "mangdProdukter": {
+            "type": "number",
+            "description": "Mängd produkter i kg som uppstått till följd av behandling",
+            "format": "double",
+            "example": 24.5
+          },
+          "mangdMaterial": {
+            "type": "number",
+            "description": "Mängd material i kg som uppstått till följd av behandling",
+            "format": "double",
+            "example": 50
+          },
+          "behandlingsPlats": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Plats"
+              }
+            ],
+            "description": "Den plats där behandling av avfall sker."
+          },
+          "atervinningsresultattypkod": {
+            "type": "string",
+            "description": "Typ av resultat av återvinning (om avfallet är spillolja)",
+            "nullable": true
+          },
+          "mangdRegenerering": {
+            "type": "number",
+            "description": "Mängd avfall i kg som regenererats",
+            "format": "double",
+            "nullable": true,
+            "example": 24.5
+          },
+          "mangdAnnanMaterialatervinning": {
+            "type": "number",
+            "description": "Mängd avfall i kg som återvunnits på annat vis",
+            "format": "double",
+            "nullable": true,
+            "example": 24.5
+          },
+          "mangdEnergiatervinning": {
+            "type": "number",
+            "description": "Mängd avfall i kg som återvunnits som energi",
+            "format": "double",
+            "nullable": true,
+            "example": 24.5
+          },
+          "mangdBortskaffande": {
+            "type": "number",
+            "description": "Mängd avfall i kg som återvunnits genom bortskaffande",
+            "format": "double",
+            "nullable": true,
+            "example": 24.5
+          },
+          "specifikationAvOvrigt": {
+            "type": "string",
+            "description": "Specifikation av övrigt om typ av resultat",
+            "nullable": true
+          },
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
+            "format": "date-time",
+            "example": "2019-11-18T17:16:40.8780000+01:00"
+          },
+          "ombud": {
+            "type": "string",
+            "description": "Det företag (orgnr) eller person (persnr) som registrerat in anteckningen i verksamhetsutövarens ställe."
+          },
+          "ombudetsNamn": {
+            "type": "string",
+            "description": "Ombudets namn"
+          },
+          "ombudetsKontaktpersonNamn": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (namn)"
+          },
+          "ombudetsKontaktpersonEpost": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (epost)"
+          },
+          "ombudetsKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (telefonnummer)"
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "description": "Den som är anteckningsskyldig (orgnr) för att ha hanterat eller transporterat avfallet."
+          },
+          "verksamhetensNamn": {
+            "type": "string",
+            "description": "Verksamhetens namn"
+          },
+          "verksamhetensKontaktpersonNamn": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (namn)"
+          },
+          "verksamhetensKontaktpersonEpost": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (epost)"
+          },
+          "verksamhetensKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (telefonnummer)"
+          },
+          "referens": {
+            "type": "string",
+            "description": "Löpnummer eller signatur i verksamhetsutövarens system för härledning av den person som gjort anteckningen.",
+            "nullable": true
+          },
+          "avfall": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Avfall"
+              }
+            ],
+            "description": "Ett avfall av en viss mängd i kg av en viss avfallstyp."
+          }
+        }
+      },
+      "Export": {
+        "required": [
+          "avfall",
+          "behandlingsmetod",
+          "ombud",
+          "ombudetsKontaktpersonEpost",
+          "ombudetsKontaktpersonNamn",
+          "ombudetsKontaktpersonTelefonnummer",
+          "ombudetsNamn",
+          "tidpunktForAnteckningen",
+          "utanforEES",
+          "verksamhetensKontaktpersonEpost",
+          "verksamhetensKontaktpersonNamn",
+          "verksamhetensKontaktpersonTelefonnummer",
+          "verksamhetensNamn",
+          "verksamhetsutovare"
+        ],
+        "type": "object",
+        "properties": {
+          "behandlingsmetod": {
+            "type": "string",
+            "description": "Med vilken metod avfallet behandlades, en R/D-kod.",
+            "example": "R10"
+          },
+          "utanforEES": {
+            "type": "boolean",
+            "description": "Om avfallet transporteras utanför EES"
+          },
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
+            "format": "date-time",
+            "example": "2019-11-18T17:16:40.8780000+01:00"
+          },
+          "ombud": {
+            "type": "string",
+            "description": "Det företag (orgnr) eller person (persnr) som registrerat in anteckningen i verksamhetsutövarens ställe."
+          },
+          "ombudetsNamn": {
+            "type": "string",
+            "description": "Ombudets namn"
+          },
+          "ombudetsKontaktpersonNamn": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (namn)"
+          },
+          "ombudetsKontaktpersonEpost": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (epost)"
+          },
+          "ombudetsKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (telefonnummer)"
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "description": "Den som är anteckningsskyldig (orgnr) för att ha hanterat eller transporterat avfallet."
+          },
+          "verksamhetensNamn": {
+            "type": "string",
+            "description": "Verksamhetens namn"
+          },
+          "verksamhetensKontaktpersonNamn": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (namn)"
+          },
+          "verksamhetensKontaktpersonEpost": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (epost)"
+          },
+          "verksamhetensKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (telefonnummer)"
+          },
+          "referens": {
+            "type": "string",
+            "description": "Löpnummer eller signatur i verksamhetsutövarens system för härledning av den person som gjort anteckningen.",
+            "nullable": true
+          },
+          "avfall": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Avfall"
+              }
+            ],
+            "description": "Ett avfall av en viss mängd i kg av en viss avfallstyp."
+          }
+        }
+      },
+      "Handel": {
+        "required": [
+          "avfall",
+          "nyInnehavare",
+          "ombud",
+          "ombudetsKontaktpersonEpost",
+          "ombudetsKontaktpersonNamn",
+          "ombudetsKontaktpersonTelefonnummer",
+          "ombudetsNamn",
+          "tidigareInnehavare",
+          "tidpunktForAnteckningen",
+          "uppkomstPlats",
+          "verksamhetensKontaktpersonEpost",
+          "verksamhetensKontaktpersonNamn",
+          "verksamhetensKontaktpersonTelefonnummer",
+          "verksamhetensNamn",
+          "verksamhetsutovare"
+        ],
+        "type": "object",
+        "properties": {
+          "tidigareInnehavare": {
+            "type": "string",
+            "description": "Verksamhetsutövare (orgnr) som var senaste innehavare av avfallet."
+          },
+          "nyInnehavare": {
+            "type": "string",
+            "description": "Verksamhetsutövare (orgnr) som övertar avfallet för vidare hantering."
+          },
+          "uppkomstPlats": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Plats"
+              }
+            ],
+            "description": "Plats för avfallets uppkomst"
+          },
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
+            "format": "date-time",
+            "example": "2019-11-18T17:16:40.8780000+01:00"
+          },
+          "ombud": {
+            "type": "string",
+            "description": "Det företag (orgnr) eller person (persnr) som registrerat in anteckningen i verksamhetsutövarens ställe."
+          },
+          "ombudetsNamn": {
+            "type": "string",
+            "description": "Ombudets namn"
+          },
+          "ombudetsKontaktpersonNamn": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (namn)"
+          },
+          "ombudetsKontaktpersonEpost": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (epost)"
+          },
+          "ombudetsKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (telefonnummer)"
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "description": "Den som är anteckningsskyldig (orgnr) för att ha hanterat eller transporterat avfallet."
+          },
+          "verksamhetensNamn": {
+            "type": "string",
+            "description": "Verksamhetens namn"
+          },
+          "verksamhetensKontaktpersonNamn": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (namn)"
+          },
+          "verksamhetensKontaktpersonEpost": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (epost)"
+          },
+          "verksamhetensKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (telefonnummer)"
+          },
+          "referens": {
+            "type": "string",
+            "description": "Löpnummer eller signatur i verksamhetsutövarens system för härledning av den person som gjort anteckningen.",
+            "nullable": true
+          },
+          "avfall": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Avfall"
+              }
+            ],
+            "description": "Ett avfall av en viss mängd i kg av en viss avfallstyp."
+          }
+        }
+      },
+      "Insamling": {
+        "required": [
+          "avfall",
+          "insamlingsDatum",
+          "insamlingsPlats",
+          "lagringsPlats",
+          "ombud",
+          "ombudetsKontaktpersonEpost",
+          "ombudetsKontaktpersonNamn",
+          "ombudetsKontaktpersonTelefonnummer",
+          "ombudetsNamn",
+          "tidigareInnehavare",
+          "tidpunktForAnteckningen",
+          "verksamhetensKontaktpersonEpost",
+          "verksamhetensKontaktpersonNamn",
+          "verksamhetensKontaktpersonTelefonnummer",
+          "verksamhetensNamn",
+          "verksamhetsutovare"
+        ],
+        "type": "object",
+        "properties": {
+          "insamlingsDatum": {
+            "type": "string",
+            "description": "Datum då insamlingen gjordes.",
+            "format": "date-time",
+            "example": "2019-11-18T17:16:40.8780000+01:00"
+          },
+          "tidigareInnehavare": {
+            "type": "string",
+            "description": "Verksamhetsutövare (orgnr) som var senaste innehavare av avfallet."
+          },
+          "insamlingsPlats": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Plats"
+              }
+            ],
+            "description": "Plats för slut av insamling"
+          },
+          "lagringsPlats": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Plats"
+              }
+            ],
+            "description": "sortering/lagring"
+          },
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
+            "format": "date-time",
+            "example": "2019-11-18T17:16:40.8780000+01:00"
+          },
+          "ombud": {
+            "type": "string",
+            "description": "Det företag (orgnr) eller person (persnr) som registrerat in anteckningen i verksamhetsutövarens ställe."
+          },
+          "ombudetsNamn": {
+            "type": "string",
+            "description": "Ombudets namn"
+          },
+          "ombudetsKontaktpersonNamn": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (namn)"
+          },
+          "ombudetsKontaktpersonEpost": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (epost)"
+          },
+          "ombudetsKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (telefonnummer)"
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "description": "Den som är anteckningsskyldig (orgnr) för att ha hanterat eller transporterat avfallet."
+          },
+          "verksamhetensNamn": {
+            "type": "string",
+            "description": "Verksamhetens namn"
+          },
+          "verksamhetensKontaktpersonNamn": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (namn)"
+          },
+          "verksamhetensKontaktpersonEpost": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (epost)"
+          },
+          "verksamhetensKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (telefonnummer)"
+          },
+          "referens": {
+            "type": "string",
+            "description": "Löpnummer eller signatur i verksamhetsutövarens system för härledning av den person som gjort anteckningen.",
+            "nullable": true
+          },
+          "avfall": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Avfall"
+              }
+            ],
+            "description": "Ett avfall av en viss mängd i kg av en viss avfallstyp."
+          }
+        }
+      },
+      "Insamlingsoverlamning": {
+        "required": [
+          "avfall",
+          "nyInnehavare",
+          "ombud",
+          "ombudetsKontaktpersonEpost",
+          "ombudetsKontaktpersonNamn",
+          "ombudetsKontaktpersonTelefonnummer",
+          "ombudetsNamn",
+          "overlamnatDatum",
+          "overlamningsPlats",
+          "tidpunktForAnteckningen",
+          "verksamhetensKontaktpersonEpost",
+          "verksamhetensKontaktpersonNamn",
+          "verksamhetensKontaktpersonTelefonnummer",
+          "verksamhetensNamn",
+          "verksamhetsutovare"
+        ],
+        "type": "object",
+        "properties": {
+          "overlamnatDatum": {
+            "type": "string",
+            "description": "Datum när avfallet överlämnades till en annan verksamhetsutövare för vidare hantering.",
+            "format": "date-time",
+            "example": "2019-11-18T17:16:40.8780000+01:00"
+          },
+          "nyInnehavare": {
+            "type": "string",
+            "description": "Verksamhetsutövare (orgnr) som övertar avfallet för vidare hantering."
+          },
+          "overlamningsPlats": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Plats"
+              }
+            ],
+            "description": "Platsen där överlämning av avfall sker."
+          },
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
+            "format": "date-time",
+            "example": "2019-11-18T17:16:40.8780000+01:00"
+          },
+          "ombud": {
+            "type": "string",
+            "description": "Det företag (orgnr) eller person (persnr) som registrerat in anteckningen i verksamhetsutövarens ställe."
+          },
+          "ombudetsNamn": {
+            "type": "string",
+            "description": "Ombudets namn"
+          },
+          "ombudetsKontaktpersonNamn": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (namn)"
+          },
+          "ombudetsKontaktpersonEpost": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (epost)"
+          },
+          "ombudetsKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (telefonnummer)"
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "description": "Den som är anteckningsskyldig (orgnr) för att ha hanterat eller transporterat avfallet."
+          },
+          "verksamhetensNamn": {
+            "type": "string",
+            "description": "Verksamhetens namn"
+          },
+          "verksamhetensKontaktpersonNamn": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (namn)"
+          },
+          "verksamhetensKontaktpersonEpost": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (epost)"
+          },
+          "verksamhetensKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (telefonnummer)"
+          },
+          "referens": {
+            "type": "string",
+            "description": "Löpnummer eller signatur i verksamhetsutövarens system för härledning av den person som gjort anteckningen.",
+            "nullable": true
+          },
+          "avfall": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Avfall"
+              }
+            ],
+            "description": "Ett avfall av en viss mängd i kg av en viss avfallstyp."
           }
         }
       },
       "Transport": {
+        "required": [
+          "avfall",
+          "avsandare",
+          "datumForStartAvTransport",
+          "mottagare",
+          "ombud",
+          "ombudetsKontaktpersonEpost",
+          "ombudetsKontaktpersonNamn",
+          "ombudetsKontaktpersonTelefonnummer",
+          "ombudetsNamn",
+          "slutTransportPlats",
+          "startTransportPlats",
+          "tidpunktForAnteckningen",
+          "transportmedeltyp",
+          "verksamhetensKontaktpersonEpost",
+          "verksamhetensKontaktpersonNamn",
+          "verksamhetensKontaktpersonTelefonnummer",
+          "verksamhetensNamn",
+          "verksamhetsutovare"
+        ],
         "type": "object",
         "properties": {
-          "tidpunktForAnteckningen": {
-            "type": "string",
-            "format": "date-time"
-          },
           "datumForStartAvTransport": {
             "type": "string",
-            "format": "date-time"
-          },
-          "referens": {
-            "type": "string",
-            "nullable": true
-          },
-          "ombud": {
-            "type": "string",
-            "nullable": true
-          },
-          "verksamhetsutovare": {
-            "type": "string",
-            "nullable": true
-          },
-          "avfall": {
-            "$ref": "#/components/schemas/Avfall"
+            "description": "Datum när en transport påbörjas.",
+            "format": "date-time",
+            "example": "2019-11-18T17:16:40.8780000+01:00"
           },
           "startTransportPlats": {
-            "$ref": "#/components/schemas/Plats"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Plats"
+              }
+            ],
+            "description": "Utgångsplats för en transport."
           },
           "slutTransportPlats": {
-            "$ref": "#/components/schemas/Plats"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Plats"
+              }
+            ],
+            "description": "Destination för en transport."
           },
           "avsandare": {
             "type": "string",
-            "nullable": true
+            "description": "Det företag (orgnr) eller person (persnr) som innehar avfallet innan transport."
           },
           "mottagare": {
             "type": "string",
-            "nullable": true
+            "description": "Det företag (orgnr) eller person (persnr) som mottager avfallet vid transportens destination."
           },
           "transportmedeltyp": {
             "type": "string",
+            "description": "Med vilket medel en transport genomförs, identifieras med transportmedeltyp (en bokstav).",
+            "example": "T"
+          },
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
+            "format": "date-time",
+            "example": "2019-11-18T17:16:40.8780000+01:00"
+          },
+          "ombud": {
+            "type": "string",
+            "description": "Det företag (orgnr) eller person (persnr) som registrerat in anteckningen i verksamhetsutövarens ställe."
+          },
+          "ombudetsNamn": {
+            "type": "string",
+            "description": "Ombudets namn"
+          },
+          "ombudetsKontaktpersonNamn": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (namn)"
+          },
+          "ombudetsKontaktpersonEpost": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (epost)"
+          },
+          "ombudetsKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (telefonnummer)"
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "description": "Den som är anteckningsskyldig (orgnr) för att ha hanterat eller transporterat avfallet."
+          },
+          "verksamhetensNamn": {
+            "type": "string",
+            "description": "Verksamhetens namn"
+          },
+          "verksamhetensKontaktpersonNamn": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (namn)"
+          },
+          "verksamhetensKontaktpersonEpost": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (epost)"
+          },
+          "verksamhetensKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (telefonnummer)"
+          },
+          "referens": {
+            "type": "string",
+            "description": "Löpnummer eller signatur i verksamhetsutövarens system för härledning av den person som gjort anteckningen.",
+            "nullable": true
+          },
+          "avfall": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Avfall"
+              }
+            ],
+            "description": "Ett avfall av en viss mängd i kg av en viss avfallstyp."
+          }
+        }
+      },
+      "InputValidationError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "InputValidationErrorDetails": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "traceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InputValidationError"
+            },
             "nullable": true
           }
         }
       },
       "Transportplanering": {
+        "required": [
+          "avfall",
+          "mottagare",
+          "ombud",
+          "ombudetsKontaktpersonEpost",
+          "ombudetsKontaktpersonNamn",
+          "ombudetsKontaktpersonTelefonnummer",
+          "ombudetsNamn",
+          "platsUppkomst",
+          "tidpunktForAnteckningen",
+          "transportor",
+          "verksamhetensKontaktpersonEpost",
+          "verksamhetensKontaktpersonNamn",
+          "verksamhetensKontaktpersonTelefonnummer",
+          "verksamhetensNamn",
+          "verksamhetsutovare"
+        ],
         "type": "object",
         "properties": {
-          "tidpunktForAnteckningen": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "datumPlaneradTransport": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "ombud": {
-            "type": "string",
-            "nullable": true
-          },
-          "verksamhetsutovare": {
-            "type": "string",
-            "nullable": true
-          },
-          "referens": {
-            "type": "string",
-            "nullable": true
-          },
-          "avfall": {
-            "$ref": "#/components/schemas/Avfall"
-          },
           "transportor": {
             "type": "string",
-            "nullable": true
+            "description": "Den verksamhetsutövare (orgnr) som transporterar avfallet (men inte hanterar det)."
           },
           "platsUppkomst": {
-            "$ref": "#/components/schemas/Plats"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Plats"
+              }
+            ],
+            "description": "Den plats där avfall uppstod (hos avfallsproducenten)."
           },
           "mottagare": {
             "type": "string",
+            "description": "Det företag (orgnr) eller person (persnr) som mottager avfallet vid transportens destination."
+          },
+          "tidpunktForAnteckningen": {
+            "type": "string",
+            "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
+            "format": "date-time",
+            "example": "2019-11-18T17:16:40.8780000+01:00"
+          },
+          "ombud": {
+            "type": "string",
+            "description": "Det företag (orgnr) eller person (persnr) som registrerat in anteckningen i verksamhetsutövarens ställe."
+          },
+          "ombudetsNamn": {
+            "type": "string",
+            "description": "Ombudets namn"
+          },
+          "ombudetsKontaktpersonNamn": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (namn)"
+          },
+          "ombudetsKontaktpersonEpost": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (epost)"
+          },
+          "ombudetsKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Ombudets kontaktperson (telefonnummer)"
+          },
+          "verksamhetsutovare": {
+            "type": "string",
+            "description": "Den som är anteckningsskyldig (orgnr) för att ha hanterat eller transporterat avfallet."
+          },
+          "verksamhetensNamn": {
+            "type": "string",
+            "description": "Verksamhetens namn"
+          },
+          "verksamhetensKontaktpersonNamn": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (namn)"
+          },
+          "verksamhetensKontaktpersonEpost": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (epost)"
+          },
+          "verksamhetensKontaktpersonTelefonnummer": {
+            "type": "string",
+            "description": "Verksamhetens kontaktperson (telefonnummer)"
+          },
+          "referens": {
+            "type": "string",
+            "description": "Löpnummer eller signatur i verksamhetsutövarens system för härledning av den person som gjort anteckningen.",
             "nullable": true
+          },
+          "avfall": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Avfall"
+              }
+            ],
+            "description": "Ett avfall av en viss mängd i kg av en viss avfallstyp."
           }
         }
       }
