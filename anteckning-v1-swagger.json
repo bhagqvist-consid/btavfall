@@ -628,6 +628,83 @@
         }
       }
     },
+    "/sarskildaorganisationsnummer": {
+      "post": {
+        "tags": [
+          "sarskildaorganisationsnummer"
+        ],
+        "summary": "Registrerar ett behandlingsmottagande",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Behandlingsmottagning"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/sarskildaorganisationsnummer/{id}": {
+      "put": {
+        "tags": [
+          "sarskildaorganisationsnummer"
+        ],
+        "summary": "Uppdaterar ett behandlingsmottagande",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Avfallsid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Behandlingsmottagning"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request invalid"
+          }
+        }
+      }
+    },
     "/transporter": {
       "post": {
         "tags": [
@@ -804,11 +881,11 @@
     "schemas": {
       "BehandlingsMetodFilter": {
         "enum": [
-          0,
-          1,
-          2
+          "A",
+          "R",
+          "D"
         ],
-        "type": "integer",
+        "type": "string",
         "format": "int32"
       },
       "Adress": {
@@ -1844,6 +1921,11 @@
           "mottagare": {
             "type": "string",
             "description": "Det företag (orgnr) eller person (persnr) som mottager avfallet vid transportens destination."
+          },
+          "sniKod": {
+            "type": "string",
+            "description": "SNI-kod för att specificera vilken verksamhet som bedrivs.",
+            "nullable": true
           },
           "tidpunktForAnteckningen": {
             "type": "string",
