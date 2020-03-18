@@ -103,5 +103,6 @@ NV-Client-Tracking-ID: 3.1415927 
 This is the api for Supervisory authorities to query registred waste notes. 
 
 * Api name: tillsyn
-* Status: Planned
+* Description [swagger-file](tillsyn-v1-swagger.json).
+* Status: In development
 
