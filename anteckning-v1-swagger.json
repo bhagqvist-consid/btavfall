@@ -628,6 +628,83 @@
         }
       }
     },
+    "/sarskildaorganisationsnummer": {
+      "post": {
+        "tags": [
+          "sarskildaorganisationsnummer"
+        ],
+        "summary": "Registrerar ett behandlingsmottagande",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Behandlingsmottagning"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/sarskildaorganisationsnummer/{id}": {
+      "put": {
+        "tags": [
+          "sarskildaorganisationsnummer"
+        ],
+        "summary": "Uppdaterar ett behandlingsmottagande",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Avfallsid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Behandlingsmottagning"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AntecknaSvar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request invalid"
+          }
+        }
+      }
+    },
     "/transporter": {
       "post": {
         "tags": [
@@ -1111,7 +1188,7 @@
       "Behandlingsresultat": {
         "required": [
           "avfall",
-          "behandlingsmetod",
+          "behandlingsmetodkod",
           "behandlingsPlats",
           "ombud",
           "ombudetsKontaktpersonEpost",
@@ -1127,9 +1204,14 @@
         ],
         "type": "object",
         "properties": {
-          "behandlingsmetod": {
+          "behandlingsmetodkod": {
+            "type": "string"
+          },
+          "underkod": {
             "type": "string",
-            "description": "Med vilken metod avfallet behandlades, en R/D-kod."
+            "description": "För ett urval av behandlingskoder (R- och D-koder) ska man kunna ange en underkod.",
+            "nullable": true,
+            "example": "A"
           },
           "mangdIckeFarligtAvfall": {
             "type": "number",
@@ -1137,15 +1219,9 @@
             "format": "double",
             "example": 24.5
           },
-          "mangdProdukter": {
+          "mangdMaterialProdukt": {
             "type": "number",
-            "description": "Mängd produkter i kg som uppstått till följd av behandling",
-            "format": "double",
-            "example": 24.5
-          },
-          "mangdMaterial": {
-            "type": "number",
-            "description": "Mängd material i kg som uppstått till följd av behandling",
+            "description": "Mängd materialProdukt i kg som uppstått till följd av behandling",
             "format": "double",
             "example": 50
           },
@@ -1259,7 +1335,7 @@
       "Export": {
         "required": [
           "avfall",
-          "behandlingsmetod",
+          "behandlingsmetodkod",
           "ombud",
           "ombudetsKontaktpersonEpost",
           "ombudetsKontaktpersonNamn",
@@ -1275,10 +1351,8 @@
         ],
         "type": "object",
         "properties": {
-          "behandlingsmetod": {
-            "type": "string",
-            "description": "Med vilken metod avfallet behandlades, en R/D-kod.",
-            "example": "R10"
+          "behandlingsmetodkod": {
+            "type": "string"
           },
           "utanforEES": {
             "type": "boolean",
@@ -1844,6 +1918,11 @@
           "mottagare": {
             "type": "string",
             "description": "Det företag (orgnr) eller person (persnr) som mottager avfallet vid transportens destination."
+          },
+          "sniKod": {
+            "type": "string",
+            "description": "SNI-kod för att specificera vilken verksamhet som bedrivs.",
+            "nullable": true
           },
           "tidpunktForAnteckningen": {
             "type": "string",
