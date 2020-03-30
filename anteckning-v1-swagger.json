@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:64102/api/v1"
+      "url": "https://api-test.naturvardsverket.se/btavfall/anteckning/v1"
     }
   ],
   "paths": {
