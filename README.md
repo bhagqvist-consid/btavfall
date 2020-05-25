@@ -25,7 +25,7 @@ JSON
 ## Transport security
 mTLS is used, you will need to have a client certificate from an approved authority.
 
-## Autentication
+## Authentication
 OAuth2 Bearer is used, you will be provided with an access token with one year limitation.
 
 ## URL
