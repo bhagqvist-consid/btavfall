@@ -985,7 +985,7 @@
             "type": "string",
             "description": "En 2-6 siffrig kod",
             "nullable": true,
-            "example": "020101"
+            "example": "030201"
           },
           "farligt": {
             "type": "string",
@@ -1150,7 +1150,7 @@
             "type": "string",
             "description": "En 6-siffrig kod",
             "nullable": true,
-            "example": "020101"
+            "example": "030201"
           },
           "mangd": {
             "type": "number",
@@ -1708,7 +1708,6 @@
       "InsamlingsMottagning": {
         "required": [
           "avfall",
-          "datumForAvfalletsmottagande",
           "kommandeHanteringsPlats",
           "mottagningsDatum",
           "ombud",
@@ -1731,12 +1730,6 @@
           "mottagningsDatum": {
             "type": "string",
             "description": "Datum då insamlingen gjordes.",
-            "format": "date-time",
-            "example": "2019-11-18T17:16:40.8780000+01:00"
-          },
-          "datumForAvfalletsmottagande": {
-            "type": "string",
-            "description": "Datum för mottagandet",
             "format": "date-time",
             "example": "2019-11-18T17:16:40.8780000+01:00"
           },
