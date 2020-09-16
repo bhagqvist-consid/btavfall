@@ -7,10 +7,32 @@
   },
   "servers": [
     {
-      "url": "http://localhost:64102/api/v1"
+      "url": "http://btavfall-st.anteckning.nvvtw2016.consid.net/api/v1"
     }
   ],
   "paths": {
+    "/anteckningstyper": {
+      "get": {
+        "tags": [
+          "anteckningstyper"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Anteckningstyp"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/atervinningsresultattyper": {
       "get": {
         "tags": [
@@ -784,29 +806,6 @@
         }
       }
     },
-    "/transportmedel": {
-      "get": {
-        "tags": [
-          "transportmedel"
-        ],
-        "summary": "Hämtar en lista med transportmedel",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Transportmedel"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/transportplaneringar": {
       "post": {
         "tags": [
@@ -899,10 +898,46 @@
           }
         }
       }
+    },
+    "/transportsatt": {
+      "get": {
+        "tags": [
+          "transportsatt"
+        ],
+        "summary": "Hämtar en lista med transportsätt",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transportmedel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "Anteckningstyp": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "beskrivning": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "AtervinningsresultatTyp": {
         "type": "object",
         "properties": {
@@ -1144,12 +1179,15 @@
         "description": "Kommunkod och Adress med postnummer eller en geometrisk punkt med beskrivning eller CfarNr."
       },
       "Avfall": {
+        "required": [
+          "kod",
+          "mangd"
+        ],
         "type": "object",
         "properties": {
           "kod": {
             "type": "string",
             "description": "En 6-siffrig kod",
-            "nullable": true,
             "example": "030201"
           },
           "mangd": {
@@ -1194,7 +1232,7 @@
             "type": "string",
             "description": "Datum när avfallet togs emot (ex för behandling).",
             "format": "date-time",
-            "example": "2019-11-18T17:16:40.8780000+01:00"
+            "example": "2019-11-18T16:16:40.8780000+00:00"
           },
           "tidigareInnehavare": {
             "type": "string",
@@ -1208,7 +1246,7 @@
             "type": "string",
             "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
             "format": "date-time",
-            "example": "2019-11-18T17:16:40.8780000+01:00"
+            "example": "2019-11-18T16:16:40.8780000+00:00"
           },
           "ombud": {
             "type": "string",
@@ -1352,7 +1390,7 @@
         ],
         "type": "object",
         "properties": {
-          "transportmedeltyp": {
+          "transportsatt": {
             "type": "string",
             "nullable": true
           },
@@ -1378,7 +1416,7 @@
             "type": "string",
             "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
             "format": "date-time",
-            "example": "2019-11-18T17:16:40.8780000+01:00"
+            "example": "2019-11-18T16:16:40.8780000+00:00"
           },
           "ombud": {
             "type": "string",
@@ -1549,7 +1587,7 @@
             "type": "string",
             "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
             "format": "date-time",
-            "example": "2019-11-18T17:16:40.8780000+01:00"
+            "example": "2019-11-18T16:16:40.8780000+00:00"
           },
           "ombud": {
             "type": "string",
@@ -1631,7 +1669,7 @@
             "type": "string",
             "description": "Datum för den utförda transaktionen.",
             "format": "date-time",
-            "example": "2019-11-18T17:16:40.8780000+01:00"
+            "example": "2019-11-18T16:16:40.8780000+00:00"
           },
           "tidigareInnehavare": {
             "type": "string",
@@ -1647,7 +1685,7 @@
             "type": "string",
             "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
             "format": "date-time",
-            "example": "2019-11-18T17:16:40.8780000+01:00"
+            "example": "2019-11-18T16:16:40.8780000+00:00"
           },
           "ombud": {
             "type": "string",
@@ -1718,7 +1756,7 @@
           "senasteHanteringsPlats",
           "tidigareInnehavare",
           "tidpunkt",
-          "transportmedeltyp",
+          "transportsatt",
           "verksamhetensKontaktpersonEpost",
           "verksamhetensKontaktpersonNamn",
           "verksamhetensKontaktpersonTelefonnummer",
@@ -1731,7 +1769,7 @@
             "type": "string",
             "description": "Datum då insamlingen gjordes.",
             "format": "date-time",
-            "example": "2019-11-18T17:16:40.8780000+01:00"
+            "example": "2019-11-18T16:16:40.8780000+00:00"
           },
           "tidigareInnehavare": {
             "type": "string",
@@ -1744,7 +1782,7 @@
           "senasteHanteringsPlats": {
             "$ref": "#/components/schemas/Plats"
           },
-          "transportmedeltyp": {
+          "transportsatt": {
             "type": "string",
             "description": "Med vilket medel en transport genomförs, identifieras med transportmedeltyp (en bokstav).",
             "example": "T"
@@ -1753,7 +1791,7 @@
             "type": "string",
             "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
             "format": "date-time",
-            "example": "2019-11-18T17:16:40.8780000+01:00"
+            "example": "2019-11-18T16:16:40.8780000+00:00"
           },
           "ombud": {
             "type": "string",
@@ -1823,8 +1861,8 @@
           "ombudetsKontaktpersonTelefonnummer",
           "ombudetsNamn",
           "tidpunkt",
-          "transportmedeltyp",
           "transportor",
+          "transportsatt",
           "verksamhetensKontaktpersonEpost",
           "verksamhetensKontaktpersonNamn",
           "verksamhetensKontaktpersonTelefonnummer",
@@ -1833,7 +1871,7 @@
         ],
         "type": "object",
         "properties": {
-          "transportmedeltyp": {
+          "transportsatt": {
             "type": "string",
             "description": "Med vilket medel en transport genomförs, identifieras med transportmedeltyp (en bokstav).",
             "example": "T"
@@ -1860,7 +1898,7 @@
             "type": "string",
             "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
             "format": "date-time",
-            "example": "2019-11-18T17:16:40.8780000+01:00"
+            "example": "2019-11-18T16:16:40.8780000+00:00"
           },
           "ombud": {
             "type": "string",
@@ -1929,7 +1967,7 @@
           "ombudetsNamn",
           "tidigareInnehavare",
           "tidpunkt",
-          "transportmedeltyp",
+          "transportsatt",
           "transportSlutplats",
           "transportStartDatum",
           "transportStartplats",
@@ -1945,7 +1983,7 @@
             "type": "string",
             "description": "Datum när en transport påbörjas.",
             "format": "date-time",
-            "example": "2019-11-18T17:16:40.8780000+01:00"
+            "example": "2019-11-18T16:16:40.8780000+00:00"
           },
           "transportStartplats": {
             "$ref": "#/components/schemas/Plats"
@@ -1953,7 +1991,7 @@
           "transportSlutplats": {
             "$ref": "#/components/schemas/Plats"
           },
-          "transportmedeltyp": {
+          "transportsatt": {
             "type": "string",
             "description": "Med vilket medel en transport genomförs, identifieras med transportmedeltyp (en bokstav).",
             "example": "T"
@@ -1972,7 +2010,7 @@
             "type": "string",
             "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
             "format": "date-time",
-            "example": "2019-11-18T17:16:40.8780000+01:00"
+            "example": "2019-11-18T16:16:40.8780000+00:00"
           },
           "ombud": {
             "type": "string",
@@ -2071,22 +2109,6 @@
           }
         }
       },
-      "Transportmedel": {
-        "type": "object",
-        "properties": {
-          "beskrivning": {
-            "type": "string",
-            "description": "En beskrivning av transportmedeltypen.",
-            "nullable": true
-          },
-          "transportmedeltyp": {
-            "type": "string",
-            "description": "En bokstav som anger typ av transport.",
-            "nullable": true,
-            "example": "T"
-          }
-        }
-      },
       "Transportplanering": {
         "required": [
           "avfall",
@@ -2099,8 +2121,8 @@
           "ombudetsKontaktpersonTelefonnummer",
           "ombudetsNamn",
           "tidpunkt",
-          "transportmedeltyp",
           "transportor",
+          "transportsatt",
           "uppkomstplats",
           "verksamhetensKontaktpersonEpost",
           "verksamhetensKontaktpersonNamn",
@@ -2118,7 +2140,7 @@
             "description": "8 siffror",
             "nullable": true
           },
-          "transportmedeltyp": {
+          "transportsatt": {
             "type": "string",
             "description": "Med vilket medel en transport genomförs, identifieras med transportmedeltyp (en bokstav).",
             "example": "T"
@@ -2145,7 +2167,7 @@
             "type": "string",
             "description": "Datum och klockslag då anteckningen gjordes hos verksamhetsutövaren.",
             "format": "date-time",
-            "example": "2019-11-18T17:16:40.8780000+01:00"
+            "example": "2019-11-18T16:16:40.8780000+00:00"
           },
           "ombud": {
             "type": "string",
@@ -2200,6 +2222,22 @@
           },
           "avfall": {
             "$ref": "#/components/schemas/Avfall"
+          }
+        }
+      },
+      "Transportmedel": {
+        "type": "object",
+        "properties": {
+          "beskrivning": {
+            "type": "string",
+            "description": "En beskrivning av transportmedeltypen.",
+            "nullable": true
+          },
+          "transportsatt": {
+            "type": "string",
+            "description": "En bokstav som anger typ av transport.",
+            "nullable": true,
+            "example": "T"
           }
         }
       }
